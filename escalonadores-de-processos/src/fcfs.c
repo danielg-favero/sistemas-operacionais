@@ -1,4 +1,4 @@
-#include "fcfs.h"
+#include "algorithms.h"
 
 float fcfs(Queue *queue) {
     Process currentProcess;
@@ -30,4 +30,12 @@ float fcfs(Queue *queue) {
     ganttDiagram(endedProcesses, totalTime);
 
     return avarageTime;
+}
+
+void executeFcfs() {
+    Queue *queue = startQueue();
+    inputProcessQueue(queue);
+    float avarageWaitingTime = fcfs(queue);
+
+    printf("\nTempo médio de espera: %.2f\n\n", avarageWaitingTime);
 }

@@ -1,6 +1,6 @@
-#include "sjf.h"
+#include "algorithms.h"
 
-void sjf(Process *process, int n) {
+float sjf(Process *process, int n) {
     int i, j;
     Process aux;
     
@@ -32,5 +32,25 @@ void sjf(Process *process, int n) {
         totalTime += process[i].startTime;
     }
     
-    printf("Tempo medio de espera: %.2f\n", (float)totalTime / n);
+    return (float)totalTime / n;
+}
+
+void executeSjf() {
+    int n;
+    int i;
+    printf("Informe a quantidade de processos: ");
+    scanf("%d", &n);
+
+    Process *process = inputProcessArray(n);
+    int totalTime = 0;
+
+    for(i = 0; i < n; i++){
+        totalTime += process[i].time;
+    }
+
+    float avarageWaitingTime = sjf(process, n);
+
+    printf("Tempo medio de espera: %.2f\n", avarageWaitingTime);
+
+    printGranntDiagram(process, n, totalTime);
 }

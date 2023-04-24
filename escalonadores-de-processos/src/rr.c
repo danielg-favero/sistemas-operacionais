@@ -1,4 +1,4 @@
-#include "rr.h"
+#include "algorithms.h"
 
 float roundRobin(Queue *queue, int timeSlice) {
     Process currentProcess;
@@ -73,4 +73,18 @@ float roundRobin(Queue *queue, int timeSlice) {
     } 
 
     return (float)sum / queueLength;
+}
+
+void executeRR() {
+    Queue *queue = startQueue();
+
+    int timeSlice;
+    printf("\nInforme o Time Slice / Quantum: ");
+    scanf("%d", &timeSlice);
+
+    inputProcessQueue(queue);
+
+    float avarageWaitingTime = roundRobin(queue, timeSlice);
+
+    printf("\nTempo médio de espera: %.2f\n\n", avarageWaitingTime);
 }

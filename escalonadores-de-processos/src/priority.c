@@ -1,14 +1,14 @@
-#include "priority.h"
+#include "algorithms.h"
 
-void priorityFunction(Process *process, int n) {
+float priorityFunction(Process *process, int n) {
     int i, j;
     Process aux;
     for (i = 0; i < n; i++) {
-        for (j = i + 1; j < n; j++) {
-            if (process[i].priority > process[j].priority) {
-                aux = process[i];
-                process[i] = process[j];
-                process[j] = aux;
+        for (j = 0; j < n - 1 - i; j++) {
+            if (process[j].priority > process[j + 1].priority) {
+                aux = process[j];
+                process[j] = process[j + 1];
+                process[j + 1] = aux;
             }
         }
     }
@@ -29,5 +29,25 @@ void priorityFunction(Process *process, int n) {
     for (i = 0; i < n; i++) {
         totalTime += process[i].startTime;
     }
-    printf("Tempo medio de espera: %.2f\n", (float)totalTime / n);
+
+    return (float)totalTime / n;
+}
+
+void executePriority() {
+    int n;
+    int i;
+    printf("Informe a quantidade de processos: ");
+    scanf("%d", &n);
+
+    Process *process = inputProcessArray(n);
+    int totalTime = 0;
+
+    for(i = 0; i < n; i++){
+        totalTime += process[i].time;
+    }
+
+    float avarageWaitingTime = priorityFunction(process, n);
+
+    printf("Tempo medio de espera: %.2f\n", avarageWaitingTime);
+    printGranntDiagram(process, n, totalTime);
 }

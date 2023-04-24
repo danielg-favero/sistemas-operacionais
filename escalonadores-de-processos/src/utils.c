@@ -69,3 +69,71 @@ void printGranntDiagram(Process *process, int n, int totalTime) {
         printf("\n");
     }
 }
+
+void inputProcessQueue(Queue *queue) {
+    int n;
+    int i;
+
+    printf("Informe a quantidade de processos: ");
+    scanf("%d", &n);
+
+    printf("Insira os processos na fila:\n");
+    for(i = 0; i < n; i++){
+        Process process;
+        int pid;
+        int time;
+        int priority;
+
+        printf("%d) PID: ", i + 1); 
+        scanf("%d", &pid);  
+
+        printf("%d) Time: ", i + 1);   
+        scanf("%d", &time);  
+
+        printf("%d) Priority: ", i + 1);   
+        scanf("%d", &priority);  
+
+        process.pid = pid;
+        process.time = time;
+        process.executionTime = time;
+        process.priority = priority;
+        process.startTime = 0;
+        process.endTime = 0;
+
+        printf("\n");
+        insert(queue, process);
+    }
+}
+
+Process *inputProcessArray(int n) {
+    int i;
+    
+    Process *process = (Process *)malloc(n * sizeof(Process));
+
+    printf("Insira os processos na fila:\n");
+    for(i = 0; i < n; i++){
+        int pid;
+        int time;
+        int priority;
+
+        printf("%d) PID: ", i + 1); 
+        scanf("%d", &pid);  
+
+        printf("%d) Time: ", i + 1);   
+        scanf("%d", &time);  
+
+        printf("%d) Priority: ", i + 1);   
+        scanf("%d", &priority);  
+
+        process[i].pid = pid;
+        process[i].time = time;
+        process[i].executionTime = time;
+        process[i].priority = priority;
+        process[i].startTime = 0;
+        process[i].endTime = 0;
+
+        printf("\n");
+    }
+
+    return process;
+}
