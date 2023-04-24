@@ -1,9 +1,28 @@
+# Makefile para compilar o código dos escalonadores de processos
+
 CC = gcc
+CFLAGS = -Wall -Wextra -g
+LDFLAGS = -lm
+SRC_DIR = src
 
-all: programa
+# Lista dos arquivos fonte
+SRCS = $(wildcard $(SRC_DIR)/*.c)
 
-programa: lib/queue/queue.c lib/queue/queue.h lib/utils.c lib/utils.h rr/rr.c rr/rr.h main.c
-	$(CC) -o programa main.c
+# Lista dos arquivos objeto gerados
+OBJS = $(SRCS:.c=.o)
+
+# Nome do executável
+EXECUTABLE = escalonador_de_processos
+
+all: $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(EXECUTABLE) $(LDFLAGS)
+
+$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f programa
+	rm -f $(OBJS) $(BIN_DIR)/$(EXECUTABLE)
+
+.PHONY: all clean

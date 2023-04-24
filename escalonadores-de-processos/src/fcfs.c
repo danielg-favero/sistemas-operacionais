@@ -6,7 +6,6 @@ float fcfs(Queue *queue) {
     int totalProcess = queue->length;
     int totalTime = 0;
     int remainingTime = 0;
-    int i;
     float avarageTime = 0;
     int sum = 0;
 

@@ -1,4 +1,6 @@
-#include "../process/process.h"
+#include "include.h"
+
+#define MAX_SIZE_PROCESSES 100
 
 typedef struct Queue Queue;
 

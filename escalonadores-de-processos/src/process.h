@@ -1,7 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
 typedef struct Process Process;
 
 struct Process {

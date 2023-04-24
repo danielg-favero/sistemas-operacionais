@@ -1,3 +1,3 @@
-#include "../lib/utils.h"
+#include "utils.h"
 
 float roundRobin(Queue *queue, int timeSlice);
