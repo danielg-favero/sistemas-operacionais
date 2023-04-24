@@ -13,6 +13,7 @@ struct Process {
     int priority;
     int startTime;
     int endTime;
+    int executionTime;
 };
 
 struct Queue {
@@ -187,6 +188,8 @@ float roundRobin(Queue *queue, int timeSlice) {
             removedProcess = removeFromQueue(queue, i);
             removedProcess.endTime = currentTime;
 
+            sum += currentTime - removedProcess.executionTime;
+
             insert(endedProcesses, removedProcess);
 
             i--;
@@ -206,6 +209,8 @@ float roundRobin(Queue *queue, int timeSlice) {
         }
         printf("\n");
     } 
+
+    return (float)sum / queueLength;
 }
 
 int main(){
@@ -234,6 +239,7 @@ int main(){
 
         process.pid = pid;
         process.time = time;
+        process.executionTime = time;
         process.priority = priority;
 
         printf("\n");
@@ -241,8 +247,8 @@ int main(){
     }
 
     printQueue(queue);
-    roundRobin(queue, 3);
     // printf("\nTempo médio FCFS: %.2f\n\n", fcfs(queue));
+    printf("\nTempo médio RR: %.2f\n\n", roundRobin(queue, 3));
 
     return 0;
 }
