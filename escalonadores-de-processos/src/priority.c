@@ -36,7 +36,7 @@ float priorityFunction(Process *process, int n) {
 void executePriority() {
     int n;
     int i;
-    printf("Informe a quantidade de processos: ");
+    printf("\nInforme a quantidade de processos: ");
     scanf("%d", &n);
 
     Process *process = inputProcessArray(n);
@@ -48,6 +48,6 @@ void executePriority() {
 
     float avarageWaitingTime = priorityFunction(process, n);
 
-    printf("Tempo medio de espera: %.2f\n", avarageWaitingTime);
+    printf("\nTempo medio de espera: %.2f\n", avarageWaitingTime);
     printGranntDiagram(process, n, totalTime);
 }

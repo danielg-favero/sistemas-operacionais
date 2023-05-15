@@ -38,7 +38,7 @@ float sjf(Process *process, int n) {
 void executeSjf() {
     int n;
     int i;
-    printf("Informe a quantidade de processos: ");
+    printf("\nInforme a quantidade de processos: ");
     scanf("%d", &n);
 
     Process *process = inputProcessArray(n);
@@ -50,7 +50,7 @@ void executeSjf() {
 
     float avarageWaitingTime = sjf(process, n);
 
-    printf("Tempo medio de espera: %.2f\n", avarageWaitingTime);
+    printf("\nTempo medio de espera: %.2f\n", avarageWaitingTime);
 
     printGranntDiagram(process, n, totalTime);
 }

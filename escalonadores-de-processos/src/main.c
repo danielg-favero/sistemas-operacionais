@@ -4,6 +4,7 @@ int main(){
     int opcao = 0;
 
     while(opcao != -1){
+        printf("\n");
         printf("1) FCFS\n");
         printf("2) SJF\n");
         printf("3) Prioridades\n");
@@ -25,7 +26,7 @@ int main(){
                 executeRR();
                 break;
             default:
-                printf("Opção inválida!\n");
+                printf("\nOpção inválida!\n");
         }
     }
 

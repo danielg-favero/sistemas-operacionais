@@ -29,15 +29,6 @@ void ganttDiagram(Queue *queue, int totalTime) {
     }
 }
 
-void printProcesses(Process *process, int n) {
-    printf("%-10s %-10s %-10s %-10s %-10s\n", "PID", "Priority", "Time", "Start Time", "End Time"); // Cabeçalho da tabela
-    int i;
-    for (i = 0; i < n; i++) {
-        printf("%-10d %-10d %-10d %-10d %-10d\n", process[i].pid, process[i].priority, process[i].time, process[i].startTime, process[i].endTime);
-        printf("-----------------------------------------------------\n");
-    }
-}
-
 void orderById(Process *process, int n) {
     int i, j;
     Process aux;
@@ -74,10 +65,10 @@ void inputProcessQueue(Queue *queue) {
     int n;
     int i;
 
-    printf("Informe a quantidade de processos: ");
+    printf("\nInforme a quantidade de processos: ");
     scanf("%d", &n);
 
-    printf("Insira os processos na fila:\n");
+    printf("\nInsira os processos na fila:\n");
     for(i = 0; i < n; i++){
         Process process;
         int pid;
@@ -110,7 +101,7 @@ Process *inputProcessArray(int n) {
     
     Process *process = (Process *)malloc(n * sizeof(Process));
 
-    printf("Insira os processos na fila:\n");
+    printf("\nInsira os processos na fila:\n");
     for(i = 0; i < n; i++){
         int pid;
         int time;

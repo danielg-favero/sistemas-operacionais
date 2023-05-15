@@ -36,6 +36,6 @@ void executeFcfs() {
     Queue *queue = startQueue();
     inputProcessQueue(queue);
     float avarageWaitingTime = fcfs(queue);
-
+    
     printf("\nTempo médio de espera: %.2f\n\n", avarageWaitingTime);
 }
