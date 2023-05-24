@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <omp.h>
 
 // int mandelbrot(int real, int img) {
@@ -24,46 +25,49 @@
 int main() {
     int width = 1920;
     int height = 1080;
-    int value;
-    int x, y;
     int i, j;
-
-    double xStart = -2;
-    double xEnd = 1;
-    double yStart = -1;
-    double yEnd = 1;
-
-    double dx = (xEnd - xStart) / (width - 1);
-    double dy = (yEnd - yStart) / (height - 1);
 
     int iterations = 100;
     int k;
-    double zReal, zImg;
-    double r2, i2, dist2;
-    
-    #pragma omp parallel for private(i, j)
-    for(i = 0; i < width; i++) {
-        for(j = 0; j < height; j++) {
-            x = xStart + i * dx;
-            y = yEnd - j * dy;
 
-            zReal = x;
-            zImg = y;
-            value = iterations;
+    unsigned char *image = (unsigned char *)malloc(width * height * sizeof(unsigned char));
 
-            #pragma omp parallel for private(k)
+    #pragma omp parallel for private(i, j) shared(image)
+    for(i = 0; i < height; i++) {
+        for(j = 0; j < width; j++) {
+            double x = (j - width / 2.0) * 4.0 / width;
+            double y = (i - height / 2.0) * 4.0 / width;
+
+            double zReal = 0;
+            double zImg = 0;
+            
+            int value = iterations;
+
             for (k = 0; k < iterations; k++) {
-                r2 = zReal * zReal;
-                i2 = zImg * zImg;
-                dist2 = r2 + i2;
+                double r2 = zReal * zReal;
+                double i2 = zImg * zImg;
+                double dist2 = r2 + i2;
                 
-                if (dist2 > 4.0) value = i;
+                if (dist2 >= 4.0) {
+                    value = k;
+                    k = iterations;
+                }
 
                 zImg = 2 * zReal * zImg + y;
                 zReal = r2 - i2 + x;
             }
+            
+            unsigned char color = (unsigned char)(255 * (value / (double)iterations));
+            image[i * width + j] = color;
         }
     }
+
+    FILE *file = fopen("mandelbrot.pgm", "wb");
+    fprintf(file, "P5\n%d %d\n255\n", width, height);
+    fwrite(image, sizeof(unsigned char), width * height, file);
+    fclose(file);
+    
+    free(image);
 
     return 0;
 }
