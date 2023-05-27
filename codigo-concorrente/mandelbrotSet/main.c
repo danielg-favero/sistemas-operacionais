@@ -1,52 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <omp.h>
+#include <string.h>
 
-// int mandelbrot(int real, int img) {
-//     int iterations = 100;
-//     int i;
-// 	double zReal = real;
-// 	double zImg = img;
+#define WIDTH 1920
+#define HEIGHT 1080
 
-// 	for (i = 0; i < iterations; i++) {
-// 		double r2 = zReal * zReal;
-// 		double i2 = zImg * zImg;
-//         double dist2 = r2 + i2;
-		
-// 		if (dist2 > 4.0) return i;
-
-// 		zImg = 2 * zReal * zImg + img;
-// 		zReal = r2 - i2 + real;
-// 	}
-
-// 	return iterations;
-// }
-
-int main() {
-    int width = 1920;
-    int height = 1080;
+unsigned char * mandelbrot() {
     int i, j;
 
     int iterations = 100;
     int k;
 
-    unsigned char *image = (unsigned char *)malloc(width * height * sizeof(unsigned char));
+    double x;
+    double y;
+    double zReal;
+    double zImg;
+    int value;
+    double r2;
+    double i2;
+    double dist2;
+    unsigned char color;
 
-    #pragma omp parallel for private(i, j) shared(image)
-    for(i = 0; i < height; i++) {
-        for(j = 0; j < width; j++) {
-            double x = (j - width / 2.0) * 4.0 / width;
-            double y = (i - height / 2.0) * 4.0 / width;
+    unsigned char *image = (unsigned char *)malloc(WIDTH * HEIGHT * sizeof(unsigned char));
 
-            double zReal = 0;
-            double zImg = 0;
-            
-            int value = iterations;
+    #pragma omp parallel for private(i, j, zReal, zImg, value, x, y, r2, i2, dist2, color, k) shared(image)
+    for(i = 0; i < HEIGHT; i++) {
+        for(j = 0; j < WIDTH; j++) {
+            zReal = 0;
+            zImg = 0;
+                
+            value = iterations;
+
+            x = (j - WIDTH / 2.0) * 4.0 / WIDTH;
+            y = (i - HEIGHT / 2.0) * 4.0 / WIDTH;
 
             for (k = 0; k < iterations; k++) {
-                double r2 = zReal * zReal;
-                double i2 = zImg * zImg;
-                double dist2 = r2 + i2;
+                r2 = zReal * zReal;
+                i2 = zImg * zImg;
+                dist2 = r2 + i2;
                 
                 if (dist2 >= 4.0) {
                     value = k;
@@ -57,14 +49,20 @@ int main() {
                 zReal = r2 - i2 + x;
             }
             
-            unsigned char color = (unsigned char)(255 * (value / (double)iterations));
-            image[i * width + j] = color;
+            color = (unsigned char)(255 * (value / (double)iterations));
+            image[i * WIDTH + j] = color;
         }
     }
 
+    return image;
+}
+
+int main() {
+    unsigned char *image  = mandelbrot();
+
     FILE *file = fopen("mandelbrot.pgm", "wb");
-    fprintf(file, "P5\n%d %d\n255\n", width, height);
-    fwrite(image, sizeof(unsigned char), width * height, file);
+    fprintf(file, "P5\n%d %d\n255\n", WIDTH, HEIGHT);
+    fwrite(image, sizeof(unsigned char), WIDTH * HEIGHT, file);
     fclose(file);
     
     free(image);
