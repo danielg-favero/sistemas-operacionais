@@ -25,6 +25,7 @@ unsigned char * mandelbrot() {
     unsigned char *image = (unsigned char *)malloc(WIDTH * HEIGHT * sizeof(unsigned char));
 
     #pragma omp parallel for private(i, j, zReal, zImg, value, x, y, r2, i2, dist2, color, k) shared(image)
+    // #pragma omp parallel for private(i, j) shared(image)
     for(i = 0; i < HEIGHT; i++) {
         for(j = 0; j < WIDTH; j++) {
             zReal = 0;
@@ -49,8 +50,11 @@ unsigned char * mandelbrot() {
                 zReal = r2 - i2 + x;
             }
             
-            color = (unsigned char)(255 * (value / (double)iterations));
-            image[i * WIDTH + j] = color;
+            #pragma omp critical
+            {
+                color = (unsigned char)(255 * (value / (double)iterations));
+                image[i * WIDTH + j] = color;
+            }
         }
     }
 
